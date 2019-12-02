@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Création du tournoi{% endblock %}
+
+{% block body %}
+    {% form_theme form 'bootstrap_4_layout.html.twig' %}
+    {{ form_start(form) }}
+        {{ form_label(form.nom, "Nom du tournoi") }}
+        {{ form_errors(form.nom) }}
+        {{ form_widget(form.nom) }}
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,91 @@
+#logo{
+    max-width: 7%;
+    height: auto;
+}
+
+#creer-tournoi{
+    max-width: 75%;
+    margin:auto;
+    margin-bottom: 2%;
+    margin-top: 2%;
+}
+
+form{
+    max-width: 75%;
+    margin:auto;
+    margin-bottom: 2%;
+    margin-top: 2%;
+}
+.btn{
+    margin-top : 1%;
+    margin-bottom: 1%;
+}
+
+.suppr{
+    float: right;
+    margin: auto;
+}
+
+.card>ul>li{
+    width: 100%;
+    display: inline-block;
+}
+
+.card{
+    margin:2%;
+}
+
+.score{
+    float: right;
+}
+
+
+.joueur{
+    float: left;
+}
+
+li {
+    max-width: 75%;
+    margin:auto;
+}
+
+.msg_erreur{
+    color: red;
+    font-weight : bold;
+    border-width:1px;
+    border-style:double;
+    border-color:red;
+    max-width: 75%;
+    margin: auto;
+}
+
+.droite{
+    float: right;
+}
+
+.gauche{
+    float: left;
+    width: 100%;
+}
+
+.footer{
+    float: bottom;
+}
+
+.joueurspoules{
+    display: inline-block;
+}
+
+.j1{
+    float: left;
+    width: 45%;
+}
+
+.j2{
+    float: right;
+    width: 45%;
+}
+
+.match{
+    display: inline-block;
+}

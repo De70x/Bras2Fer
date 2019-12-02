@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+{% block autres_head %}<script src="{{ asset('js/confirmation_suppression.js') }}"></script>{% endblock %}
+{% block title %}&copy; Tournoi Bras de fer TCSAM{% endblock %}
+{% block menu0 %}active{% endblock %}
+{% block body %}
+    {% if tournois is not empty %}
+        {% for tournoi in tournois %}
+            <li class="list-group-item">
+                <a href="{{ path('tournoi_detail',{"id":tournoi.id}) }}">
+                    {{ tournoi.nom }}
+                </a>
+                <button data-href="{{ path('suppressionTournoi',{"id":tournoi.id}) }}" data-toggle="modal"
+                        data-target="#confirm-delete" data-contenu="{{ tournoi.nom }}"
+                        class="btn btn-danger btn-sm suppr">Supprimer
+                </button>
+            </li>
+        {% endfor %}
+    {% else %}
+        <p>Aucune tournoi n'a été créé pour le moment !</p>
+    {% endif %}
+    <a href="{{ path('creationTournoi') }}">
+        <button type="button" class="btn btn-primary btn-lg btn-block" id="creer-tournoi">Creer un tournoi</button>
+    </a>
+
+    {#Ici, on ajoute la modale de confirmation#}
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Confirmation de suppression
+                </div>
+                <div class="modal-body">
+                    Etes-vous certain de vouloir supprimer le tournoi :
+                    {#Le titre est déterminé en js#}
+                    <div class="test_titre"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    <a class="btn btn-danger btn-ok">Confirmer la suppression</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

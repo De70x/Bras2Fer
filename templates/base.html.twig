@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Layout{% endblock %}</title>
+    <link rel="icon" href="{{ asset('images/logo_club_transp.png') }}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('css/ajustement.css') }}"/>
+    {% block autres_head %}{% endblock %}
+</head>
+<body class="text-center">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExample07">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item {% block menu0 %}{% endblock %}">
+                    <a class="nav-link" href="{{ path('accueil') }}">Accueil</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<h1 id="banner"><img src="{{ asset('images/logo_club_transp.png') }}" id="logo">Tournoi de bras de fer du TCSAM {{ "now" | date("Y") }} <img src="{{ asset('images/renard_seul_transparant.png') }}" id="logo"></h1>
+{% if app.request.hasPreviousSession %}
+    {% for msg in app.session.flashBag.get('error') %}
+        <div class="msg_erreur" role="alert">
+            {{ msg }}
+        </div>
+    {% endfor %}
+{% endif %}
+{% block body %}
+{% endblock %}
+<hr>
+<p id="footer">&copy; Tournoi de bras de fer {{ "now" | date("Y") }}<br>
+    Par Antoine Deloffre<br>
+    Pour le TCSAM <br>
+</body>
+</html>

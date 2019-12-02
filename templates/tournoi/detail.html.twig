@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+
+{% block autres_head %}
+    <script src="{{ asset('js/confirmation_suppression.js') }}"></script>{% endblock %}
+
+{% block body %}
+    <h1>Tournoi : {{ tournoi.nom }}</h1>
+    <div class="joueurspoules col-sm-12">
+        <div class="row col-sm-4 gauche">
+            <div class="card">
+                <a href="{{ path('creationJoueur', {'id_tournoi' : tournoi.id}) }}">
+                    <button type="button" class="btn btn-primary btn-sm btn-block">Créer un joueur</button>
+                </a>
+                <div class="card-header">
+                    <h5>Joueurs sans poule</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% if creationJoueurEnCours %}
+                        {% form_theme formJoueur 'bootstrap_4_layout.html.twig' %}
+                        {{ form_start(formJoueur) }}
+                        {{ form_errors(formJoueur.nom) }}
+                        {{ form_widget(formJoueur.nom, { 'attr': {'placeholder': 'nom'} }) }}
+
+                        {{ form_errors(formJoueur.prenom) }}
+                        {{ form_widget(formJoueur.prenom, { 'attr': {'placeholder': 'prenom'} }) }}
+
+                        {{ form_errors(formJoueur.surnom) }}
+                        {{ form_widget(formJoueur.surnom, { 'attr': {'placeholder': 'surnom (non obligatoire)'} }) }}
+                        {{ form_end(formJoueur) }}
+                    {% endif %}
+                    {% if joueursSansPoule is not empty %}
+                        {% for joueur in joueursSansPoule %}
+                            {% if joueur.surnom is not null %}
+                                <li class="list-group-item">{{ joueur.surnom }}</li>
+                            {% else %}
+                                <li class="list-group-item">{{ joueur.prenom }}, {{ joueur.nom }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        <a href="{{ path('creationPoule',{'id_tournoi':tournoi.id}) }}">
+            <button type="button" class="btn btn-primary">Créer une poule</button>
+        </a>
+        <div class="row col-sm-8 droite">
+
+            {% if creationEnCours %}
+                {% form_theme form 'bootstrap_4_layout.html.twig' %}
+                {{ form_start(form) }}
+                {{ form_label(form.nom, "Nom de la poule", { 'attr': {'maxlength': 3} }) }}
+                {{ form_errors(form.nom) }}
+                {{ form_widget(form.nom) }}
+                {{ form_end(form) }}
+            {% endif %}
+            {% for poule in tournoi.poules %}
+                <div class="col-sm-6">
+                    <div class="card">
+                        <a href="{{ path('creationMatch', {'id_poule' : poule.id}) }}">
+                            <button type="button" class="btn btn-dark btn-sm btn-block">Lancer un match</button>
+                        </a>
+                        <div class="card-header">
+                           Poule {{ poule.nom |capitalize}}
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><span class="joueur">Nom</span><span
+                                        class="nb_match">Matchs Joués</span><span
+                                        class="score">Score</span></li>
+                            {% if poule.joueurs is not empty %}
+                                {% for joueur in poule.joueurs %}
+                                    {% if joueur.surnom is not null %}
+                                        <li class="list-group-item"><span class="joueur">{{ joueur.surnom }}</span><span
+                                                    class="nb_match">{{ joueur.getNombreMatchs(matchRepository) }}</span><span
+                                                    class="score">{{ joueur.getScore(matchRepository) }}</span></li>
+                                    {% else %}
+                                        <li class="list-group-item"><span
+                                                    class="joueur">{{ joueur.prenom }}, {{ joueur.nom }}</span><span
+                                                    class="nb_match">{{ joueur.getNombreMatchs(matchRepository) }}</span><span
+                                                    class="score">{{ joueur.getScore(matchRepository) }}</span></li>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </ul>
+                        <button data-href="{{ path('suppressionPoule',{"id":poule.id}) }}" data-toggle="modal"
+                                data-target="#confirm-delete" data-contenu="{{ poule.nom }}"
+                                class="btn btn-danger btn-sm suppr">Supprimer la poule
+                        </button>
+                    </div>
+                    <a href="{{ path('ajoutJoueurPoule',{'id_poule':poule.id}) }}">
+                        <button type="button" class="btn btn-dark btn-sm btn-block" id="creer-tournoi">Ajouter un
+                            joueur
+                        </button>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {#Ici, on ajoute la modale de confirmation#}
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Confirmation de suppression
+                </div>
+                <div class="modal-body">
+                    Etes-vous certain de vouloir supprimer la poule :
+                    {#Le titre est déterminé en js#}
+                    <div class="test_titre"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    <a class="btn btn-danger btn-ok">Confirmer la suppression</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block title %}
+
+{% endblock %}
+
