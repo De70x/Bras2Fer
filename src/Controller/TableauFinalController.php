@@ -12,7 +12,7 @@ class TableauFinalController extends AbstractController
      */
     public function index()
     {
-        return $this->render('tableau_final.html.twig', [
+        return $this->render('tableau_final\tableau_final.html.twig', [
 
         ]);
     }
