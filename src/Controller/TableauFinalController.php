@@ -17,6 +17,8 @@ class TableauFinalController extends AbstractController
         ]);
     }
 
+
+
     public function determinerTypeTableau($nbJoueurs){
         // On est généreux, on imagine qu'un jour il y aura 128 personnes dans le tableau final
         $puiss2 = [1, 2, 4, 8, 16, 32, 64, 128];

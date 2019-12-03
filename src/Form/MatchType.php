@@ -7,6 +7,7 @@ use App\Entity\Match;
 use App\Repository\JoueurRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -30,7 +31,9 @@ class MatchType extends AbstractType
                     return $joueurRepository->getQBJoueursParPoule($poule);
                 },
             ))->add('joueur1Gagne', SubmitType::class)
-            ->add('joueur2Gagne', SubmitType::class);
+            ->add('joueur2Gagne', SubmitType::class)
+        ->add('matchBonus');
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

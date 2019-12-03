@@ -42,6 +42,11 @@ class Match
     private $poule;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $matchBonus;
+
+    /**
      * @return Joueur
      */
     public function getJoueur1(): ?Joueur
@@ -108,5 +113,17 @@ class Match
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getMatchBonus(): ?bool
+    {
+        return $this->matchBonus;
+    }
+
+    public function setMatchBonus(bool $matchBonus): self
+    {
+        $this->matchBonus = $matchBonus;
+
+        return $this;
     }
 }

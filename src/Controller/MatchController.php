@@ -32,6 +32,7 @@ class MatchController extends AbstractController
             $match->setPoule($poule);
             $joueur1 = $form['joueur1']->getData();
             $joueur2 = $form['joueur2']->getData();
+            $isMatchBonus = $form['matchBonus']->getData();
 
             if($joueur1 == $joueur2){
                 $request->getSession()->getFlashBag()->add('error', "Vous voulez faire comment ? bras droit contre bras gauche ?");
@@ -42,7 +43,7 @@ class MatchController extends AbstractController
             }
 
             if ($matchRepository->findMatchParJoueurs($joueur1, $joueur2) > 0) {
-                if ($matchRepository->findMatchParJoueurs($joueur2,$joueur1) > 0) {
+                if ($matchRepository->findMatchParJoueurs($joueur2,$joueur1) > 0 && !$isMatchBonus) {
                     $request->getSession()->getFlashBag()->add('error', "Ces deux joueurs ont déjà fait le match aller et le match retour !");
 
                     return $this->redirectToRoute('creationMatch', [

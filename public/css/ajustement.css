@@ -89,3 +89,12 @@ li {
 .match{
     display: inline-block;
 }
+
+.match0{
+    display: flex;
+    flex-direction: column;
+}
+
+.joueurs{
+    justify-content: space-between;
+}
