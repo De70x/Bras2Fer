@@ -24,6 +24,7 @@ class TournoiController extends AbstractController
         return $this->render('tournoi/detail.html.twig', [
             'tournoi' => $tournoi,
             'creationEnCours' => false,
+            'finPoules' => false,
             'creationJoueurEnCours' => false,
             'joueursSansPoule' => $joueursSansPoule,
             'matchRepository' => $matchRepository,
@@ -48,6 +49,7 @@ class TournoiController extends AbstractController
             return $this->redirectToRoute('tournoi_detail', [
                 'id' => $tournoi->getId(),
                 'creationEnCours' => false,
+                'finPoules' => false,
                 'creationJoueurEnCours' => false,
             ]);
         }

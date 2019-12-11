@@ -14,8 +14,6 @@ class JoueurType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('prenom')
-            ->add('surnom')
             ->add('valider', SubmitType::class)
         ;
     }

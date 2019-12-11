@@ -37,6 +37,7 @@ class JoueurController extends AbstractController
             return $this->redirectToRoute('tournoi_detail', [
                 'id' => $id_tournoi,
                 'creationEnCours' => false,
+                'finPoules' => false,
                 'creationJoueurEnCours' => false,
                 'joueursSansPoule' => $joueursRestants,
                 'matchRepository' => $matchRepository,
@@ -48,6 +49,7 @@ class JoueurController extends AbstractController
             'formJoueur' => $formJoueur->createView(),
             'tournoi' => $tournoi,
             'creationEnCours' => false,
+            'finPoules' => false,
             'creationJoueurEnCours' => true,
             'joueursSansPoule' => $joueursRestants,
             'matchRepository' => $matchRepository,

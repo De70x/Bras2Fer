@@ -20,21 +20,11 @@
                         {{ form_start(formJoueur) }}
                         {{ form_errors(formJoueur.nom) }}
                         {{ form_widget(formJoueur.nom, { 'attr': {'placeholder': 'nom'} }) }}
-
-                        {{ form_errors(formJoueur.prenom) }}
-                        {{ form_widget(formJoueur.prenom, { 'attr': {'placeholder': 'prenom'} }) }}
-
-                        {{ form_errors(formJoueur.surnom) }}
-                        {{ form_widget(formJoueur.surnom, { 'attr': {'placeholder': 'surnom (non obligatoire)'} }) }}
                         {{ form_end(formJoueur) }}
                     {% endif %}
                     {% if joueursSansPoule is not empty %}
                         {% for joueur in joueursSansPoule %}
-                            {% if joueur.surnom is not null %}
-                                <li class="list-group-item">{{ joueur.surnom }}</li>
-                            {% else %}
-                                <li class="list-group-item">{{ joueur.prenom }}, {{ joueur.nom }}</li>
-                            {% endif %}
+                            <li class="list-group-item">{{ joueur.nom }}</li>
                         {% endfor %}
                     {% endif %}
                 </ul>
@@ -55,37 +45,40 @@
             {% endif %}
             {% for poule in tournoi.poules %}
                 <div class="col-sm-6">
-                    <div class="card">
+                    <table>
                         <a href="{{ path('creationMatch', {'id_poule' : poule.id}) }}">
-                            <button type="button" class="btn btn-dark btn-sm btn-block">Lancer un match</button>
+                            <button type="button" class="btn btn-dark btn-sm">Lancer un match</button>
                         </a>
-                        <div class="card-header">
-                           Poule {{ poule.nom |capitalize}}
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><span class="joueur">Nom</span><span
-                                        class="nb_match">Matchs Joués</span><span
-                                        class="score">Score</span></li>
-                            {% if poule.joueurs is not empty %}
-                                {% for joueur in poule.joueurs %}
-                                    {% if joueur.surnom is not null %}
-                                        <li class="list-group-item"><span class="joueur">{{ joueur.surnom }}</span><span
-                                                    class="nb_match">{{ joueur.getNombreMatchs(matchRepository) }}</span><span
-                                                    class="score">{{ joueur.getScore(matchRepository) }}</span></li>
-                                    {% else %}
-                                        <li class="list-group-item"><span
-                                                    class="joueur">{{ joueur.prenom }}, {{ joueur.nom }}</span><span
-                                                    class="nb_match">{{ joueur.getNombreMatchs(matchRepository) }}</span><span
-                                                    class="score">{{ joueur.getScore(matchRepository) }}</span></li>
-                                    {% endif %}
-                                {% endfor %}
+                        <tr>
+                            <th class="titre-tab" colspan="4">
+                                Poule {{ poule.nom |capitalize }}
+                            </th>
+                        </tr>
+                        <tr>
+                            {% if finPoules %}
+                            <th></th>
                             {% endif %}
-                        </ul>
+                            <th>Nom</th>
+                            <th>Matchs Joués</th>
+                            <th>Score</th>
+                        </tr>
+                        {% if poule.joueurs is not empty %}
+                            {% for joueur in poule.joueurs %}
+                                <tr>
+                                    {% if finPoules == true %}
+                                        <td><input type="checkbox" id="{{ joueur.id }}" name="{{ joueur.id }}"></td>
+                                    {% endif %}
+                                    <td>{{ joueur.nom }}</td>
+                                    <td>{{ joueur.getNombreMatchs(matchRepository) }}</td>
+                                    <td>{{ joueur.getScore(matchRepository) }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
                         <button data-href="{{ path('suppressionPoule',{"id":poule.id}) }}" data-toggle="modal"
                                 data-target="#confirm-delete" data-contenu="{{ poule.nom }}"
-                                class="btn btn-danger btn-sm suppr">Supprimer la poule
+                                class="btn btn-danger btn-sm suppr">X
                         </button>
-                    </div>
+                    </table>
                     <a href="{{ path('ajoutJoueurPoule',{'id_poule':poule.id}) }}">
                         <button type="button" class="btn btn-dark btn-sm btn-block" id="creer-tournoi">Ajouter un
                             joueur
@@ -95,7 +88,9 @@
             {% endfor %}
         </div>
     </div>
-
+    <a href="{{ path('finPoules',{'id_tournoi':tournoi.id}) }}">
+        <button type="button" class="btn btn-dark btn-sm btn-block" id="creer-tournoi">Fin des poules</button>
+    </a>
     {#Ici, on ajoute la modale de confirmation#}
     <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">

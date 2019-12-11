@@ -67,6 +67,7 @@ class MatchController extends AbstractController
             return $this->redirectToRoute('tournoi_detail', [
                 'id' => $poule->getTournoi()->getId(),
                 'creationEnCours' => false,
+                'finPoules' => false,
                 'creationJoueurEnCours' => false,
                 'joueursSansPoule' => $joueursRestants,
                 'matchRepository' => $matchRepository,

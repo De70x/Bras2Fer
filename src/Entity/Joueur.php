@@ -23,16 +23,6 @@ class Joueur
     private $nom;
 
     /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $prenom;
-
-    /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
-    private $surnom;
-
-    /**
      * @var Poule
      * @ORM\ManyToOne(targetEntity="App\Entity\Poule", inversedBy="joueurs")
      */
@@ -93,33 +83,9 @@ class Joueur
         return $this;
     }
 
-    public function getPrenom(): ?string
-    {
-        return $this->prenom;
-    }
-
-    public function setPrenom(string $prenom): self
-    {
-        $this->prenom = $prenom;
-
-        return $this;
-    }
-
-    public function getSurnom(): ?string
-    {
-        return $this->surnom;
-    }
-
-    public function setSurnom(?string $surnom): self
-    {
-        $this->surnom = $surnom;
-
-        return $this;
-    }
-
     public function __toString()
     {
-        $vRet = $this->getSurnom() == null ? $this->getNom() . "," . $this->getPrenom() : $this->getSurnom();
+        $vRet = $this->getNom();
 
         return $vRet;
     }
