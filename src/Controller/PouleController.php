@@ -152,12 +152,8 @@ class PouleController extends AbstractController
     public function finDesPoules($id_tournoi, MatchRepository $matchRepository, TournoiRepository $tournoiRepository)
     {
         $tournoi = $tournoiRepository->find($id_tournoi);
-        return $this->render('tournoi/detail.html.twig', [
+        return $this->render('tableau_final/prepa_tableau.html.twig', [
             'tournoi' => $tournoi,
-            'finPoules' => true,
-            'creationEnCours' => false,
-            'creationJoueurEnCours' => false,
-            'joueursSansPoule' => null,
             'matchRepository' => $matchRepository,
         ]);
     }
