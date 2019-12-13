@@ -63,7 +63,9 @@ class Poule
      */
     public function getJoueurs()
     {
-        return $this->joueurs;
+        $joueursTries = $this->joueurs->toArray();
+        usort($joueursTries, array("App\\Entity\\Joueur", "comparator"));
+        return $joueursTries;
     }
 
     /**

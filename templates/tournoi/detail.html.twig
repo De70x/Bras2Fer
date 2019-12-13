@@ -34,7 +34,7 @@
         <a href="{{ path('creationPoule',{'id_tournoi':tournoi.id}) }}">
             <button type="button" class="btn btn-primary poule">Créer une poule</button>
         </a>
-        <form class="row col-sm-10 droite" action="{{ path('finPoules',{'id_tournoi':tournoi.id}) }}" method="post">
+        <div class="row col-sm-10 droite">
 
             {% if creationEnCours %}
                 {% form_theme form 'bootstrap_4_layout.html.twig' %}
@@ -92,14 +92,13 @@
                 </div>
             {% endfor %}
             {% if finPoules == true %}
-                <p class="info">Ici, on considère que tout le monde ira dans les tableaux.
-                Les joueurs cochés iront en dans la partie principale, les autres iront en consolante</p>
+                <p class="info">Au moment de valider, les joueurs cochés iront dans la partie principale, les autres iront en consolante</p>
                 <input class="btn btn-dark btn-sm btn-block" type="submit" value="Creer tableaux">
-            {% else %}
-                <input class="btn btn-dark btn-sm btn-block" type="submit" value="Fin des poules">
             {% endif %}
-
-        </form>
+        </div>
+        <a href="{{ path('finPoules', {'id_tournoi':tournoi.id}) }}">
+            <button class="btn btn-dark btn-sm btn-block">Fin des poules</button>
+        </a>
     </div>
     {#Ici, on ajoute la modale de confirmation#}
     <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"

@@ -35,6 +35,11 @@ class Joueur
     private $tournoi;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $score;
+
+    /**
      * @return Tournoi
      */
     public function getTournoi(): ?Tournoi
@@ -90,15 +95,31 @@ class Joueur
         return $vRet;
     }
 
-    public function getScore(MatchRepository $matchRepository){
-        return $matchRepository->scoreParJoueur($this);
-    }
-
     public function getNombreMatchs(MatchRepository $matchRepository){
         return $matchRepository->nombreMatchsParJoueur($this);
     }
 
     public function isPremier(MatchRepository $matchRepository){
         return $matchRepository->isPremier($this);
+    }
+
+    public function getScore(): ?int
+    {
+        return $this->score;
+    }
+
+    public function setScore(int $score): self
+    {
+        $this->score = $score;
+
+        return $this;
+    }
+
+    public function comparator(Joueur $object1, Joueur $object2) {
+
+        if ($object1->getScore() == $object2->getScore()) {
+            return 0;
+        }
+        return ($object1->getScore() < $object2->getScore()) ? 1 : -1;
     }
 }

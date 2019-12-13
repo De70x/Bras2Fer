@@ -107,6 +107,7 @@ class PouleController extends AbstractController
         return $this->render('tournoi/detail.html.twig', [
             'form' => $form->createView(),
             'tournoi' => $tournoi,
+            'finPoules' => false,
             'creationEnCours' => true,
             'creationJoueurEnCours' => false,
             'joueursSansPoule' => $joueursRestants,

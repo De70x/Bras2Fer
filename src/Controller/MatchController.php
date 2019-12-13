@@ -54,9 +54,13 @@ class MatchController extends AbstractController
 
             if ($form['joueur1Gagne']->isClicked()) {
                 $match->setGagnant($joueur1);
+                $joueur1->setScore($joueur1->getScore()+1);
+                $manager->persist($joueur1);
             }
             if ($form['joueur2Gagne']->isClicked()) {
                 $match->setGagnant($joueur2);
+                $joueur2->setScore($joueur2->getScore()+1);
+                $manager->persist($joueur2);
             }
 
 

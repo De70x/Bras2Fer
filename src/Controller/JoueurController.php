@@ -30,6 +30,7 @@ class JoueurController extends AbstractController
         if ($formJoueur->isSubmitted() and $formJoueur->isValid()) {
             $joueur->setTournoi($tournoi);
             $joueur->setPoule(null);
+            $joueur->setScore(0);
             $manager->persist($joueur);
             $manager->flush();
 
