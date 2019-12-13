@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block autres_head %}
+    <script src="{{ asset('js/confirmation_suppression.js') }}"></script>{% endblock %}
+
+{% block body %}
+    <h1>Tournoi : {{ tournoi.nom }}</h1>
+
+    <div class="joueurspoules col-sm-12">
+        {% for poule in tournoi.poules %}
+            <div class="col-sm-6">
+                <table>
+                    <tr>
+                        <th class="titre-tab" colspan="4">
+                            Poule {{ poule.nom |capitalize }}
+                        </th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th>Nom</th>
+                        <th>Matchs Joués</th>
+                        <th>Score</th>
+                    </tr>
+                    {% if poule.joueurs is not empty %}
+                        {% for joueur in poule.joueurs %}
+                            <tr>
+                                {% if joueur.isPremier(matchRepository) %}
+                                    <td><input type="checkbox" id="cb.{{ joueur.id }}" name="cb.{{ joueur.id }}"
+                                               checked="checked"></td>
+                                {% else %}
+                                    <td><input type="checkbox" id="cb.{{ joueur.id }}" name="cb.{{ joueur.id }}"></td>
+                                {% endif %}
+                                <td>{{ joueur.nom }}</td>
+                                <td>{{ joueur.getNombreMatchs(matchRepository) }}</td>
+                                <td>{{ joueur.getScore(matchRepository) }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </table>
+            </div>
+        {% endfor %}
+            <p class="info">Au moment de valider, les joueurs cochés iront dans la partie principale, les autres iront
+                en consolante</p>
+            <input class="btn btn-dark btn-sm btn-block" type="submit" value="Creer tableaux">
+    </div>
+
+{% endblock %}
+
+
+{% block title %}
+
+{% endblock %}
+
