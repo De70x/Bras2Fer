@@ -35,7 +35,11 @@ class TableauFinalController extends AbstractController
             array_push($this->principale, $joueur);
             unset($joueurs[array_search($joueur,$joueurs)]);
         }
+
         $this->consolante = array_values($joueurs);
+
+        usort($this->consolante, array("App\\Entity\\Joueur", "comparator"));
+        usort($this->principale, array("App\\Entity\\Joueur", "comparator"));
     }
 
 
