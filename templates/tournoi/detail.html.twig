@@ -51,14 +51,11 @@
                             <button type="button" class="btn btn-dark btn-sm">Lancer un match</button>
                         </a>
                         <tr>
-                            <th class="titre-tab" colspan="4">
+                            <th class="titre-tab" colspan="3">
                                 Poule {{ poule.nom |capitalize }}
                             </th>
                         </tr>
                         <tr>
-                            {% if finPoules %}
-                                <th></th>
-                            {% endif %}
                             <th>Nom</th>
                             <th>Matchs Joués</th>
                             <th>Score</th>
@@ -66,13 +63,6 @@
                         {% if poule.joueurs is not empty %}
                             {% for joueur in poule.joueurs %}
                                 <tr>
-                                    {% if finPoules == true %}
-                                        {% if joueur.isPremier(matchRepository) %}
-                                            <td><input type="checkbox" id="cb.{{ joueur.id }}" name="cb.{{ joueur.id }}" checked="checked"></td>
-                                        {% else %}
-                                            <td><input type="checkbox" id="cb.{{ joueur.id }}" name="cb.{{ joueur.id }}"></td>
-                                        {% endif %}
-                                    {% endif %}
                                     <td>{{ joueur.nom }}</td>
                                     <td>{{ joueur.getNombreMatchs(matchRepository) }}</td>
                                     <td>{{ joueur.getScore(matchRepository) }}</td>
@@ -91,10 +81,6 @@
                     </a>
                 </div>
             {% endfor %}
-            {% if finPoules == true %}
-                <p class="info">Au moment de valider, les joueurs cochés iront dans la partie principale, les autres iront en consolante</p>
-                <input class="btn btn-dark btn-sm btn-block" type="submit" value="Creer tableaux">
-            {% endif %}
         </div>
         <a href="{{ path('finPoules', {'id_tournoi':tournoi.id}) }}">
             <button class="btn btn-dark btn-sm btn-block">Fin des poules</button>

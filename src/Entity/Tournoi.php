@@ -42,7 +42,7 @@ class Tournoi
     /**
      * @return Joueur[]
      */
-    public function getJoueurs(): ?array
+    public function getJoueurs()
     {
         return $this->joueurs;
     }

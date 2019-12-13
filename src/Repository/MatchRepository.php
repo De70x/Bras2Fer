@@ -61,10 +61,4 @@ class MatchRepository extends ServiceEntityRepository
         } catch (NonUniqueResultException $e) {
         }
     }
-
-    public function isPremier(Joueur $joueur){
-        $nbJoueursDansPoule = sizeof($joueur->getPoule()->getJoueurs());
-        $palier = round($nbJoueursDansPoule/2);
-    }
-
 }

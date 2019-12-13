@@ -1,15 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block autres_head %}
-    <script src="{{ asset('js/confirmation_suppression.js') }}"></script>{% endblock %}
 
 {% block body %}
     <h1>Tournoi : {{ tournoi.nom }}</h1>
 
-    <div class="joueurspoules col-sm-12">
+    <form action="{{ path('tableauFinal',{'id':tournoi.id}) }}" method="post">
+        <div class="row col-sm-12">
         {% for poule in tournoi.poules %}
-            <div class="col-sm-6">
-                <table>
+                <table class="poule row col-sm-4">
                     <tr>
                         <th class="titre-tab" colspan="4">
                             Poule {{ poule.nom |capitalize }}
@@ -24,11 +22,11 @@
                     {% if poule.joueurs is not empty %}
                         {% for joueur in poule.joueurs %}
                             <tr>
-                                {% if joueur.isPremier(matchRepository) %}
-                                    <td><input type="checkbox" id="cb.{{ joueur.id }}" name="cb.{{ joueur.id }}"
+                                {% if joueur.estQualifie() %}
+                                    <td><input type="checkbox" id="{{ joueur.id }}" name="{{ joueur.id }}"
                                                checked="checked"></td>
                                 {% else %}
-                                    <td><input type="checkbox" id="cb.{{ joueur.id }}" name="cb.{{ joueur.id }}"></td>
+                                    <td><input type="checkbox" id="{{ joueur.id }}" name="{{ joueur.id }}"></td>
                                 {% endif %}
                                 <td>{{ joueur.nom }}</td>
                                 <td>{{ joueur.getNombreMatchs(matchRepository) }}</td>
@@ -37,15 +35,13 @@
                         {% endfor %}
                     {% endif %}
                 </table>
-            </div>
         {% endfor %}
+        </div>
             <p class="info">Au moment de valider, les joueurs cochés iront dans la partie principale, les autres iront
                 en consolante</p>
             <input class="btn btn-dark btn-sm btn-block" type="submit" value="Creer tableaux">
-    </div>
-
+    </form>
 {% endblock %}
-
 
 {% block title %}
 

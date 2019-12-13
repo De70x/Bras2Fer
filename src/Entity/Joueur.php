@@ -122,4 +122,26 @@ class Joueur
         }
         return ($object1->getScore() < $object2->getScore()) ? 1 : -1;
     }
+
+    /**
+     * méthode qui permet de savoir si un joueur est normalement qualifié
+     * on offre toujours le choix ensuite de rectifier
+     * @return bool
+     */
+    public function estQualifie(){
+        $nbJoueursDansPoule = sizeof($this->getPoule()->getJoueurs());
+        $palier = round($nbJoueursDansPoule/2);
+        $joueursPoule = $this->getPoule()->getJoueurs();
+        $vRet = false;
+        // les joueurs de la méthode getJoueurs sont déjà triés
+        // on itère donc jusqu'au palier et si le joueur est rencontré on return true
+        for($i = 0; $i<$palier; $i++){
+            if($joueursPoule[$i] === $this)
+            {
+                $vRet = true;
+            }
+        }
+
+        return $vRet;
+    }
 }
