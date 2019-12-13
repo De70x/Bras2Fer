@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Joueur;
 use App\Entity\Match;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -61,32 +62,9 @@ class MatchRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return Match[] Returns an array of Match objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+    public function isPremier(Joueur $joueur){
+        $nbJoueursDansPoule = sizeof($joueur->getPoule()->getJoueurs());
+        $palier = round($nbJoueursDansPoule/2);
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Match
-    {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

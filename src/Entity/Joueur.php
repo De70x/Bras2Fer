@@ -97,4 +97,8 @@ class Joueur
     public function getNombreMatchs(MatchRepository $matchRepository){
         return $matchRepository->nombreMatchsParJoueur($this);
     }
+
+    public function isPremier(MatchRepository $matchRepository){
+        return $matchRepository->isPremier($this);
+    }
 }

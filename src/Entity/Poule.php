@@ -74,9 +74,6 @@ class Poule
         $this->joueurs = $joueurs;
     }
 
-
-
-
     public function getId(): ?int
     {
         return $this->id;

@@ -36,8 +36,13 @@ form{
     margin: auto;
 }
 
+.joueurspoules{
+    display: inline-block;
+}
+
 .droite{
     float: right;
+    width: 100%;
 }
 
 .gauche{
@@ -49,9 +54,7 @@ form{
     float: bottom;
 }
 
-.joueurspoules{
-    display: inline-block;
-}
+
 
 .j1{
     float: left;
@@ -106,4 +109,11 @@ table th {
 
 .lancer{
     float: left;
+}
+
+.poule{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top : 1%;
+    margin-bottom: 1%;
 }

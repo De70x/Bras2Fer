@@ -5,8 +5,9 @@
 
 {% block body %}
     <h1>Tournoi : {{ tournoi.nom }}</h1>
+
     <div class="joueurspoules col-sm-12">
-        <div class="row col-sm-4 gauche">
+        <div class="row col-sm-2 gauche">
             <div class="card">
                 <a href="{{ path('creationJoueur', {'id_tournoi' : tournoi.id}) }}">
                     <button type="button" class="btn btn-primary btn-sm btn-block">Créer un joueur</button>
@@ -31,9 +32,9 @@
             </div>
         </div>
         <a href="{{ path('creationPoule',{'id_tournoi':tournoi.id}) }}">
-            <button type="button" class="btn btn-primary">Créer une poule</button>
+            <button type="button" class="btn btn-primary poule">Créer une poule</button>
         </a>
-        <div class="row col-sm-8 droite">
+        <form class="row col-sm-10 droite" action="{{ path('finPoules',{'id_tournoi':tournoi.id}) }}" method="post">
 
             {% if creationEnCours %}
                 {% form_theme form 'bootstrap_4_layout.html.twig' %}
@@ -56,7 +57,7 @@
                         </tr>
                         <tr>
                             {% if finPoules %}
-                            <th></th>
+                                <th></th>
                             {% endif %}
                             <th>Nom</th>
                             <th>Matchs Joués</th>
@@ -66,7 +67,11 @@
                             {% for joueur in poule.joueurs %}
                                 <tr>
                                     {% if finPoules == true %}
-                                        <td><input type="checkbox" id="{{ joueur.id }}" name="{{ joueur.id }}"></td>
+                                        {% if joueur.isPremier(matchRepository) %}
+                                            <td><input type="checkbox" id="cb.{{ joueur.id }}" name="cb.{{ joueur.id }}" checked="checked"></td>
+                                        {% else %}
+                                            <td><input type="checkbox" id="cb.{{ joueur.id }}" name="cb.{{ joueur.id }}"></td>
+                                        {% endif %}
                                     {% endif %}
                                     <td>{{ joueur.nom }}</td>
                                     <td>{{ joueur.getNombreMatchs(matchRepository) }}</td>
@@ -86,11 +91,16 @@
                     </a>
                 </div>
             {% endfor %}
-        </div>
+            {% if finPoules == true %}
+                <p class="info">Ici, on considère que tout le monde ira dans les tableaux.
+                Les joueurs cochés iront en dans la partie principale, les autres iront en consolante</p>
+                <input class="btn btn-dark btn-sm btn-block" type="submit" value="Creer tableaux">
+            {% else %}
+                <input class="btn btn-dark btn-sm btn-block" type="submit" value="Fin des poules">
+            {% endif %}
+
+        </form>
     </div>
-    <a href="{{ path('finPoules',{'id_tournoi':tournoi.id}) }}">
-        <button type="button" class="btn btn-dark btn-sm btn-block" id="creer-tournoi">Fin des poules</button>
-    </a>
     {#Ici, on ajoute la modale de confirmation#}
     <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">

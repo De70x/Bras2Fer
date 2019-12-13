@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <p class="info">Ici, on sélectionne simplement les joueurs, on ne valide qu'à la fin du match en indiquant lequel des deux a gagné</p>
+    <p class="info">On peut voir qu'il y a également une coche "Match bonus", il sert dans le cas où il y a une égalité au sein d'une poule et que cela empêche de savoir qui est qualifié.
+        Dans ce cas, on peut donc faire un match bonus entre ces deux joueurs pour déterminer qui sera devant</p>
     {% form_theme form 'bootstrap_4_layout.html.twig' %}
     <div class="match col-sm-8">
         {{ form_start(form) }}
