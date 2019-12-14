@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Joueur;
 use App\Repository\JoueurRepository;
 use App\Repository\TournoiRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,16 +12,29 @@ class TableauFinalController extends AbstractController
 {
     private $principale = array();
     private $consolante = array();
+
     /**
      * @Route("/tableauFinal/{id}", name="tableauFinal")
      */
-    public function generationTableaux($id, TournoiRepository $tournoiRepository, JoueurRepository $joueurRepository)
+    public function preparationTableaux($id, TournoiRepository $tournoiRepository, JoueurRepository $joueurRepository)
     {
         $this->remplirTableau($id, $tournoiRepository, $joueurRepository);
 
+        // S'il manque des joueurs pour atteindre une puissance de 2 on rajoute des fantomes pour les deux tableaux
+        $puissancePrincipale = $this->puissance2($this->principale);
+        while(sizeof($this->principale) < pow(2, $puissancePrincipale)){
+            array_push($this->principale, $this->newJoueurFantome());
+        }
+        $puissanceConsolante = $this->puissance2($this->consolante);
+        while(sizeof($this->consolante) < pow(2, $puissanceConsolante)){
+            array_push($this->consolante, $this->newJoueurFantome());
+        }
+
         return $this->render('tableau_final\tableau_final.html.twig', [
             'principale' => $this->principale,
+            'nbIterationsPrincipale' => $puissancePrincipale,
             'consolante' => $this->consolante,
+            'nbIterationsConsolante' => $puissanceConsolante,
         ]);
     }
 
@@ -43,25 +57,34 @@ class TableauFinalController extends AbstractController
     }
 
 
-    public function determinerTypeTableau($nbJoueurs)
+    /**
+     * Cette méthode sert à renvoyer la puissance de deux supérieure ou égale au nombre de joueurs du tableau
+     * @param $nbJoueurs
+     * @return mixed
+     */
+    public function puissance2($tableau)
     {
-        // On est généreux, on imagine qu'un jour il y aura 128 personnes dans le tableau final
-        $puiss2 = [1, 2, 4, 8, 16, 32, 64, 128];
+        $nbJoueurs = sizeof($tableau);
+        $i = 0;
 
-        // On parcourt les puissances de 2
-        for ($i = 0; $i < sizeof($puiss2); $i++) {
-            // Si par chance on tombe sur un nombre de joueur qui vaut une puissance de 2
-            // on retourne cette puissance
-            if ($nbJoueurs == $puiss2[$i]) {
-                return $puiss2[$i];
-            } // Sinon, on vérifie quelle puissance de 2 est la plus proche (celle au dessus ou celle en dessous)
-            elseif ($nbJoueurs > 4 && $nbJoueurs < $puiss2[$i]) {
-                if ($nbJoueurs >= $puiss2[$i - 1] + $puiss2[$i - 2]) {
-                    return $puiss2[$i];
-                } else {
-                    return $puiss2[$i - 1];
-                }
-            }
+        while($nbJoueurs > pow(2, $i)){
+            $i++;
         }
+
+        return $i;
+    }
+
+    public function newJoueurFantome(){
+        $joueur = new Joueur();
+        $joueur->setNom('Fantome');
+        $joueur->setId(-1);
+        return $joueur;
+    }
+
+    /**
+     * @Route("/qualif/{id_joueur}/{id_adversaire}", name="qualif")
+     */
+    public function pass($id_joueur, $id_adversaire){
+
     }
 }
