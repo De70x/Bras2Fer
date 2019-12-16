@@ -31,7 +31,8 @@
                 <td class="cell0">
                     {{ principale[0+i] }}
                     {% if principale[0+i].id != -1 %}
-                        <button class="btn-sm btn-primary pass">></button>
+                        <button class="btn-sm btn-primary pass"
+                                onClick="qualif({{ i }}+'0' + ',' + 0 + ', {{ principale[0+i].nom }}')">></button>
                     {% endif %}
                 </td>
                 {% for j in 0..nbIterationsPrincipale-2 %}
@@ -43,7 +44,7 @@
                     {{ principale[nbJoueursPrincipale-1-i] }}
                     {% if principale[nbJoueursPrincipale-1-i].id != -1 %}
                         <button class="btn-sm btn-primary pass"
-                                onClick="qualif({{ i }}1 + ',' + 0 + ',' + {{ principale[nbJoueursPrincipale-1-i].id }})">></button>
+                                onClick="qualif({{ i }}+'1' + ',' + 0 + ',{{ principale[nbJoueursPrincipale-1-i].nom }}')">></button>
                     {% endif %}
                 </td>
                 {% for k in 0..nbIterationsPrincipale-2 %}
@@ -64,8 +65,49 @@
     </table>
 
     <script>
-        function qualif(ligne, colonne, joueurQualifie){
-            window.alert(ligne, colonne, joueurQualifie);
+        function qualif(infos){
+            /* Le joueur corerspond à 0 ou 1 pour savoir lequel est passé*/
+            var numMatch = infos.substr(0,1);
+            var joueur = infos.substr(1,1);
+            var numCellule = infos.substr(3,1);
+            var numSuivant = parseInt(numCellule)+1;
+            var nomJoueur = infos.substr(5);
+
+            var ligneAdversaire;
+            var ligneQualif;
+            if(joueur == 0){
+                ligneAdversaire = '.ligne' + numMatch + '1';
+                ligneQualif = '.ligne' + numMatch + '0';
+            }
+            else{
+                ligneAdversaire = '.ligne' + numMatch + '0';
+                ligneQualif = '.ligne' + numMatch + '1';
+            }
+
+
+
+            var celluleAdversaire = ligneAdversaire + " > .cell" + numCellule;
+            var boutonAdversaire = ligneAdversaire + " > .cell" + numCellule + " > button";
+            var boutonQualif = ligneQualif + " > .cell" + numCellule + " > button";
+
+            /* On désactive les boutons */
+            $(boutonAdversaire).attr("disabled", true);
+            $(boutonQualif).attr("disabled", true);
+
+            var celluleSuivante = ligneQualif + " > .cell" + numSuivant;
+
+            /*On crée le bouton suivant*/
+            var button = document.createElement("button");
+            if(parseInt(numMatch) % 2 === 0) {
+                button.attr("class", "btn-sm btn-primary pass").attr("onClick", "qualif({{ i }}+'0' + ',' + 0 + ', {{ principale[0+i].nom }}')").attr("value", ">");
+            }
+/*            <button class="btn-sm btn-primary pass"
+            onClick="qualif({{ i }}+'0' + ',' + 0 + ', {{ principale[0+i].nom }}')">></button>*/
+
+            var span=document.createElement("SPAN");
+            span.innerHTML=nomJoueur;
+            $(celluleSuivante).append(span);
+            $(celluleAdversaire).css("text-decoration", "line-through");
         }
     </script>
 
