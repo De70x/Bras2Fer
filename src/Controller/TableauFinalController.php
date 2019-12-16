@@ -80,11 +80,4 @@ class TableauFinalController extends AbstractController
         $joueur->setId(-1);
         return $joueur;
     }
-
-    /**
-     * @Route("/qualif/{id_joueur}/{id_adversaire}", name="qualif")
-     */
-    public function pass($id_joueur, $id_adversaire){
-
-    }
 }

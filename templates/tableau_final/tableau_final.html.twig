@@ -7,35 +7,61 @@
 {% block body %}
     {% set nbMatchsPrincipale = (principale|length) / 2 %}
     {% set nbJoueursPrincipale = principale|length %}
-    {% set it = 0 %}
-    <h2>PRINCIPALE</h2>
-    <div class="tableau principale">
-        <div class="iteration">
-            {% for i in 0..nbMatchsPrincipale-1 %}
-                <div class="match">
-                    <div class="j jt1">
-                        {{ principale[0+i] }}
-                        {% if principale[0+i].id != -1 %}
-                            <a href="{{ path('qualif', {'id_joueur': principale[0+i].id, 'id_adversaire' : principale[nbJoueursPrincipale-1-i].id}) }}">
-                                <button class="btn-sm btn-primary pass">></button>
-                            </a>
-                        {% endif %}
-                    </div>
-                    <div class="j jt2">
-                        {{ principale[nbJoueursPrincipale-1-i] }}
-                        {% if principale[nbJoueursPrincipale-1-i].id != -1 %}
-                        <a href="{{ path('qualif', {'id_joueur': principale[nbJoueursPrincipale-1-i].id, 'id_adversaire' : principale[0+i].id}) }}">
-                            <button class="btn-sm btn-primary pass">></button>
-                        </a>
-                        {% endif %}
-                    </div>
-                </div>
+    <table class="final">
+        <thead>
+        <tr>
+            <th colspan="{{ nbIterationsPrincipale }}">PRINCIPALE</th>
+        </tr>
+        <tr>
+            {% for i in 1..nbIterationsPrincipale %}
+                {% if i !=  nbIterationsPrincipale %}
+                    <th>
+                        1/{{ 2 ** (nbIterationsPrincipale - i) }}
+                    </th>
+                {% else %}
+                    <th>
+                        Finale
+                    </th>
+                {% endif %}
             {% endfor %}
-        </div>
-    </div>
+        </tr>
+        </thead>
+        {# Il faut autant de ligne que de joueurs au départ #}
+        {% for i in 0..nbMatchsPrincipale-1 %}
+            <tr class="ligne{{ i }}0">
+                <td class="cell0">
+                    {{ principale[0+i] }}
+                    {% if principale[0+i].id != -1 %}
+                        <button class="btn-sm btn-primary pass">></button>
+                    {% endif %}
+                </td>
+                {% for j in 0..nbIterationsPrincipale-2 %}
+                    <td class="cell{{ j+1 }}"> </td>
+                {% endfor %}
+            </tr>
+            <tr class="ligne{{ i }}1">
+                <td class="cell0">
+                    {{ principale[nbJoueursPrincipale-1-i] }}
+                    {% if principale[nbJoueursPrincipale-1-i].id != -1 %}
+                            <button class="btn-sm btn-primary pass">></button>
+                    {% endif %}
+                </td>
+                {% for k in 0..nbIterationsPrincipale-2 %}
+                    <td class="cell{{ k+1 }}"> </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
 
     <hr>
-    <h2>CONSOLANTE</h2>
+
+    <table class="final">
+        <thead>
+        <tr>
+            <th colspan="{{ nbIterationsConsolante }}">CONSOLANTE</th>
+        </tr>
+        </thead>
+    </table>
 
 {% endblock %}
 

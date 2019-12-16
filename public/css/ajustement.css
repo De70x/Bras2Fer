@@ -121,24 +121,6 @@ table th {
     display: flex;
 }
 
-/*AFFICHAGE DES TALBEAUX*/
-.tableau{
-    display: flex;
-}
-.iteration{
-    display: grid;
-    margin-left: 5%;
-    margin-right: 5%;
-}
-.match{
-    margin-bottom: 15%;
-    margin-top: 15%;
-    display: flex;
-    flex-direction: column;
-}
-
-.j{
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 2%;
+.pass{
+    float: right;
 }
