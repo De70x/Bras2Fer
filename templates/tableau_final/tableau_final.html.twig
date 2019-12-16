@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block autres_head %}
-
 {% endblock %}
 
 {% block body %}
@@ -43,7 +42,8 @@
                 <td class="cell0">
                     {{ principale[nbJoueursPrincipale-1-i] }}
                     {% if principale[nbJoueursPrincipale-1-i].id != -1 %}
-                            <button class="btn-sm btn-primary pass">></button>
+                        <button class="btn-sm btn-primary pass"
+                                onClick="qualif({{ i }}1 + ',' + 0 + ',' + {{ principale[nbJoueursPrincipale-1-i].id }})">></button>
                     {% endif %}
                 </td>
                 {% for k in 0..nbIterationsPrincipale-2 %}
@@ -62,6 +62,12 @@
         </tr>
         </thead>
     </table>
+
+    <script>
+        function qualif(ligne, colonne, joueurQualifie){
+            window.alert(ligne, colonne, joueurQualifie);
+        }
+    </script>
 
 {% endblock %}
 
