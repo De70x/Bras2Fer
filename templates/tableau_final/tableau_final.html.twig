@@ -71,43 +71,60 @@
             var joueur = infos.substr(1,1);
             var numCellule = infos.substr(3,1);
             var numSuivant = parseInt(numCellule)+1;
-            var nomJoueur = infos.substr(5);
+            var nomJoueur = infos.substr(5).trim();
 
             var ligneAdversaire;
             var ligneQualif;
-            if(joueur == 0){
-                ligneAdversaire = '.ligne' + numMatch + '1';
-                ligneQualif = '.ligne' + numMatch + '0';
-            }
-            else{
-                ligneAdversaire = '.ligne' + numMatch + '0';
-                ligneQualif = '.ligne' + numMatch + '1';
+
+            if(numMatch % 2 === 0) {
+                if (parseInt(joueur) === 0) {
+                    ligneAdversaire = '.ligne' + numMatch + '1';
+                    ligneQualif = '.ligne' + parseInt(numMatch) / 2 + '0';
+                } else {
+                    ligneAdversaire = '.ligne' + numMatch + '0';
+                    ligneQualif = '.ligne' + (parseInt(numMatch)) / 2 + '0';
+                }
+            }else{
+                if (parseInt(joueur) === 0) {
+                    ligneAdversaire = '.ligne' + numMatch + '1';
+                    ligneQualif = '.ligne' + (parseInt(numMatch)-1)/ 2 + '1';
+                } else {
+                    ligneAdversaire = '.ligne' + numMatch + '0';
+                    ligneQualif = '.ligne' + (parseInt(numMatch)-1) / 2 + '1';
+                }
             }
 
 
 
             var celluleAdversaire = ligneAdversaire + " > .cell" + numCellule;
             var boutonAdversaire = ligneAdversaire + " > .cell" + numCellule + " > button";
-            var boutonQualif = ligneQualif + " > .cell" + numCellule + " > button";
+            var boutonQualif = '.ligne' + numMatch + joueur +  " > .cell" + numCellule + " > button";
 
             /* On désactive les boutons */
-            $(boutonAdversaire).attr("disabled", true);
-            $(boutonQualif).attr("disabled", true);
+            $(boutonAdversaire).hide();
+            $(boutonQualif).hide();
 
             var celluleSuivante = ligneQualif + " > .cell" + numSuivant;
 
             /*On crée le bouton suivant*/
-            var button = document.createElement("button");
+            /*Le numéro de la ligne sera le numéro actuel / 2 si c'est paire et le num -1 / 2 si impair*/
+            var button1 = document.createElement("button");
             if(parseInt(numMatch) % 2 === 0) {
-                button.attr("class", "btn-sm btn-primary pass").attr("onClick", "qualif({{ i }}+'0' + ',' + 0 + ', {{ principale[0+i].nom }}')").attr("value", ">");
+                button1.setAttribute("class", "btn-sm btn-primary pass");
+                button1.setAttribute("onClick", "qualif('"+parseInt(numMatch)/2+"0,"+numSuivant+","+nomJoueur+"')");
+                button1.innerHTML = ">";
             }
-/*            <button class="btn-sm btn-primary pass"
-            onClick="qualif({{ i }}+'0' + ',' + 0 + ', {{ principale[0+i].nom }}')">></button>*/
+            else{
+                button1.setAttribute("class", "btn-sm btn-primary pass");
+                button1.setAttribute("onClick", "qualif('"+(parseInt(numMatch)-1)/2 +"1,"+numSuivant+","+nomJoueur+"')");
+                button1.innerHTML = ">";
+            }
 
             var span=document.createElement("SPAN");
             span.innerHTML=nomJoueur;
             $(celluleSuivante).append(span);
-            $(celluleAdversaire).css("text-decoration", "line-through");
+            $(celluleSuivante).append(button1);
+            $(celluleAdversaire).css("text-decoration", "line-through").css("color", "red");
         }
     </script>
 
