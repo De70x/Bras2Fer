@@ -34,7 +34,7 @@ class MatchController extends AbstractController
             $joueur2 = $form['joueur2']->getData();
             $isMatchBonus = $form['matchBonus']->getData();
 
-            if($joueur1 == $joueur2){
+            if ($joueur1 == $joueur2) {
                 $request->getSession()->getFlashBag()->add('error', "Vous voulez faire comment ? bras droit contre bras gauche ?");
 
                 return $this->redirectToRoute('creationMatch', [
@@ -42,24 +42,22 @@ class MatchController extends AbstractController
                 ]);
             }
 
-            if ($matchRepository->findMatchParJoueurs($joueur1, $joueur2) > 0) {
-                if ($matchRepository->findMatchParJoueurs($joueur2,$joueur1) > 0 && !$isMatchBonus) {
-                    $request->getSession()->getFlashBag()->add('error', "Ces deux joueurs ont déjà fait le match aller et le match retour !");
+            if ($matchRepository->findMatchParJoueurs($joueur1, $joueur2) + $matchRepository->findMatchParJoueurs($joueur2, $joueur1) > 1 && !$isMatchBonus) {
+                $request->getSession()->getFlashBag()->add('error', "Ces deux joueurs ont déjà fait le match aller et le match retour !");
 
-                    return $this->redirectToRoute('creationMatch', [
-                        'id_poule' => $poule->getId(),
-                    ]);
-                }
+                return $this->redirectToRoute('creationMatch', [
+                    'id_poule' => $poule->getId(),
+                ]);
             }
 
             if ($form['joueur1Gagne']->isClicked()) {
                 $match->setGagnant($joueur1);
-                $joueur1->setScore($joueur1->getScore()+1);
+                $joueur1->setScore($joueur1->getScore() + 1);
                 $manager->persist($joueur1);
             }
             if ($form['joueur2Gagne']->isClicked()) {
                 $match->setGagnant($joueur2);
-                $joueur2->setScore($joueur2->getScore()+1);
+                $joueur2->setScore($joueur2->getScore() + 1);
                 $manager->persist($joueur2);
             }
 

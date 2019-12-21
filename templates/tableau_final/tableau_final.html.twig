@@ -27,96 +27,156 @@
         </thead>
         {# Il faut autant de ligne que de joueurs au départ #}
         {% for i in 0..nbMatchsPrincipale-1 %}
-            <tr class="ligne{{ i }}0">
-                <td class="cell0">
+            <tr class="pligne{{ i }}0">
+                <td class="pcell0">
                     {{ principale[0+i] }}
                     {% if principale[0+i].id != -1 %}
                         <button class="btn-sm btn-primary pass"
-                                onClick="qualif({{ i }}+'0' + ',' + 0 + ', {{ principale[0+i].nom }}')">></button>
+                                onClick="qualif('p'+{{ i }}+'0' + ',' + 0 + ', {{ principale[0+i].nom }}')">></button>
                     {% endif %}
                 </td>
                 {% for j in 0..nbIterationsPrincipale-2 %}
-                    <td class="cell{{ j+1 }}"> </td>
+                    <td class="pcell{{ j+1 }}"> </td>
                 {% endfor %}
             </tr>
-            <tr class="ligne{{ i }}1">
-                <td class="cell0">
+            <tr class="pligne{{ i }}1">
+                <td class="pcell0">
                     {{ principale[nbJoueursPrincipale-1-i] }}
                     {% if principale[nbJoueursPrincipale-1-i].id != -1 %}
                         <button class="btn-sm btn-primary pass"
-                                onClick="qualif({{ i }}+'1' + ',' + 0 + ',{{ principale[nbJoueursPrincipale-1-i].nom }}')">></button>
+                                onClick="qualif('p'+{{ i }}+'1' + ',' + 0 + ',{{ principale[nbJoueursPrincipale-1-i].nom }}')">></button>
                     {% endif %}
                 </td>
                 {% for k in 0..nbIterationsPrincipale-2 %}
-                    <td class="cell{{ k+1 }}"> </td>
+                    <td class="pcell{{ k+1 }}"> </td>
                 {% endfor %}
             </tr>
         {% endfor %}
     </table>
-
+    <iframe src="https://giphy.com/embed/3o6UB0lnVyBpGoXjLG" width="480" height="204" frameBorder="0" class="giphy-embed winnerp" allowFullScreen></iframe>
     <hr>
 
+    {% set nbMatchsConsolante = (consolante|length) / 2 %}
+    {% set nbJoueursConsolante = consolante|length %}
     <table class="final">
         <thead>
         <tr>
             <th colspan="{{ nbIterationsConsolante }}">CONSOLANTE</th>
         </tr>
+        <tr>
+            {% for i in 1..nbIterationsConsolante %}
+                {% if i !=  nbIterationsConsolante %}
+                    <th>
+                        1/{{ 2 ** (nbIterationsConsolante - i) }}
+                    </th>
+                {% else %}
+                    <th>
+                        Finale
+                    </th>
+                {% endif %}
+            {% endfor %}
+        </tr>
         </thead>
+        {# Il faut autant de ligne que de joueurs au départ #}
+        {% for i in 0..nbMatchsConsolante-1 %}
+            <tr class="cligne{{ i }}0">
+                <td class="ccell0">
+                    {{ consolante[0+i] }}
+                    {% if consolante[0+i].id != -1 %}
+                        <button class="btn-sm btn-primary pass"
+                                onClick="qualif('c'+{{ i }}+'0' + ',' + 0 + ', {{ consolante[0+i].nom }}')">></button>
+                    {% endif %}
+                </td>
+                {% for j in 0..nbIterationsConsolante-2 %}
+                    <td class="ccell{{ j+1 }}"> </td>
+                {% endfor %}
+            </tr>
+            <tr class="cligne{{ i }}1">
+                <td class="ccell0">
+                    {{ consolante[nbJoueursConsolante-1-i] }}
+                    {% if consolante[nbJoueursConsolante-1-i].id != -1 %}
+                        <button class="btn-sm btn-primary pass"
+                                onClick="qualif('c'+{{ i }}+'1' + ',' + 0 + ',{{ consolante[nbJoueursConsolante-1-i].nom }}')">></button>
+                    {% endif %}
+                </td>
+                {% for k in 0..nbIterationsConsolante-2 %}
+                    <td class="ccell{{ k+1 }}"> </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
     </table>
+
+    <iframe src="https://giphy.com/embed/3o6UB0lnVyBpGoXjLG" width="480" height="204" frameBorder="0" class="giphy-embed winnerc" allowFullScreen></iframe>
 
     <script>
         function qualif(infos){
-            /* Le joueur corerspond à 0 ou 1 pour savoir lequel est passé*/
-            var numMatch = infos.substr(0,1);
-            var joueur = infos.substr(1,1);
-            var numCellule = infos.substr(3,1);
+            /* Le joueur correspond à 0 ou 1 pour savoir lequel est passé*/
+            var tab = infos.substr(0,1);
+            var numMatch = infos.substr(1,1);
+            var joueur = infos.substr(2,1);
+            var numCellule = infos.substr(4,1);
             var numSuivant = parseInt(numCellule)+1;
-            var nomJoueur = infos.substr(5).trim();
+            var nomJoueur = infos.substr(6).trim();
+
+            var winnerConsolante = $('.winnerc');
+            var winnerPrincipale = $('.winnerp');
 
             var ligneAdversaire;
             var ligneQualif;
 
+            var prefixe = tab === 'c' ? 'c' : 'p';
+
+            if(prefixe === 'c' && numSuivant === {{ nbIterationsConsolante }}){
+                winnerConsolante.css('display','block');
+                winnerConsolante.append(joueur);
+            }
+
+            if(prefixe === 'p' && numSuivant === {{ nbIterationsPrincipale }}){
+                winnerPrincipale.css('display','block');
+                winnerPrincipale.append(joueur);
+            }
+
             if(numMatch % 2 === 0) {
                 if (parseInt(joueur) === 0) {
-                    ligneAdversaire = '.ligne' + numMatch + '1';
-                    ligneQualif = '.ligne' + parseInt(numMatch) / 2 + '0';
+                    ligneAdversaire = '.' + prefixe + 'ligne' + numMatch + '1';
+                    ligneQualif = '.'+ prefixe +'ligne' + parseInt(numMatch) / 2 + '0';
                 } else {
-                    ligneAdversaire = '.ligne' + numMatch + '0';
-                    ligneQualif = '.ligne' + (parseInt(numMatch)) / 2 + '0';
+                    ligneAdversaire = '.' + prefixe + 'ligne' + numMatch + '0';
+                    ligneQualif = '.' + prefixe + 'ligne' + (parseInt(numMatch)) / 2 + '0';
                 }
             }else{
                 if (parseInt(joueur) === 0) {
-                    ligneAdversaire = '.ligne' + numMatch + '1';
-                    ligneQualif = '.ligne' + (parseInt(numMatch)-1)/ 2 + '1';
+                    ligneAdversaire = '.' + prefixe + 'ligne' + numMatch + '1';
+                    ligneQualif = '.' + prefixe + 'ligne' + (parseInt(numMatch)-1)/ 2 + '1';
                 } else {
-                    ligneAdversaire = '.ligne' + numMatch + '0';
-                    ligneQualif = '.ligne' + (parseInt(numMatch)-1) / 2 + '1';
+                    ligneAdversaire = '.' +prefixe + 'ligne' + numMatch + '0';
+                    ligneQualif = '.' + prefixe + 'ligne' + (parseInt(numMatch)-1) / 2 + '1';
                 }
             }
 
 
 
-            var celluleAdversaire = ligneAdversaire + " > .cell" + numCellule;
-            var boutonAdversaire = ligneAdversaire + " > .cell" + numCellule + " > button";
-            var boutonQualif = '.ligne' + numMatch + joueur +  " > .cell" + numCellule + " > button";
+            var celluleAdversaire = ligneAdversaire + " > ." + prefixe + "cell" + numCellule;
+            var boutonAdversaire = ligneAdversaire + " > ." + prefixe + "cell" + numCellule + " > button";
+            var boutonQualif = '.' + prefixe + 'ligne' + numMatch + joueur +  " > ." + prefixe + "cell" + numCellule + " > button";
 
             /* On désactive les boutons */
             $(boutonAdversaire).hide();
             $(boutonQualif).hide();
 
-            var celluleSuivante = ligneQualif + " > .cell" + numSuivant;
+            var celluleSuivante = ligneQualif + " > ." + prefixe + "cell" + numSuivant;
 
             /*On crée le bouton suivant*/
             /*Le numéro de la ligne sera le numéro actuel / 2 si c'est paire et le num -1 / 2 si impair*/
             var button1 = document.createElement("button");
             if(parseInt(numMatch) % 2 === 0) {
                 button1.setAttribute("class", "btn-sm btn-primary pass");
-                button1.setAttribute("onClick", "qualif('"+parseInt(numMatch)/2+"0,"+numSuivant+","+nomJoueur+"')");
+                button1.setAttribute("onClick", "qualif('"+ prefixe + parseInt(numMatch)/2+"0,"+numSuivant+","+nomJoueur+"')");
                 button1.innerHTML = ">";
             }
             else{
                 button1.setAttribute("class", "btn-sm btn-primary pass");
-                button1.setAttribute("onClick", "qualif('"+(parseInt(numMatch)-1)/2 +"1,"+numSuivant+","+nomJoueur+"')");
+                button1.setAttribute("onClick", "qualif('"+ prefixe + (parseInt(numMatch)-1)/2 +"1,"+numSuivant+","+nomJoueur+"')");
                 button1.innerHTML = ">";
             }
 
